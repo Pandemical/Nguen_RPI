@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/normolize.css">
+    <link rel="stylesheet" href="styles/name_task.css">
+    <link rel="stylesheet" href="styles/items_task.css">
+    <link rel="stylesheet" href="styles/add_task.css">
+    <link rel="stylesheet" href="styles/button_clear.css">
+    <title>TodoList</title>
+</head>
+<body>
+    <header>
+        <h1>Список задач</h1>
+    </header>
+    <div class="user_add_task">
+        <h2>Новая задача</h2>
+        <input type="search" placeholder="Название задачи..." class="user_add_task_search">
+        <button class="user_add_task_button"> + Добавить</button>
+    </div>
+    <section class="task">
+        <label class="task_status backlog">Бэклог</label>
+        <ul class="task_list_backlog">
+            <li class="task_list_items">Выучить JS</li>
+            <li class="task_list_items">Выучить React</li>
+            <li class="task_list_items">Сделать домашку</li>
+        </ul>
+
+        <label class="task_status process">В процессе</label>
+        <ul class="task_list_proсess">
+            <li class="task_list_items">Выпить смузи</li>
+            <li class="task_list_items">Попить воды</li>
+        </ul>
+
+        <label class="task_status ready">Готово</label>
+        <ul class="task_list_ready">
+            <li class="task_list_items">Позвонить маме</li>
+            <li class="task_list_items">Погладить кота</li>
+        </ul>
+
+        <label class="task_status backet">Корзина</label>
+        <ul class="task_list_backet">
+            <li class="task_list_items">Сходить погулять</li>
+            <li class="task_list_items">Прочитать Войну и Мир</li>
+        </ul>
+        <button class="task_button_clear">X Очистить</button>
+    </section>
+</body>
+</html>

@@ -1,0 +1,13 @@
+.task{
+    max-width: 100%;
+    display:flex;
+}
+
+.task_status{
+    width: 30px;
+    margin-left: 50px;
+    padding-top: 10px ;
+    text-align: center;
+    white-space: nowrap;
+    border-radius: 5px;
+}
