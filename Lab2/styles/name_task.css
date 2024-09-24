@@ -15,3 +15,7 @@
     white-space: nowrap;
     border-radius: 5px;
 }
+
+.task-board{
+    display: flex;
+}

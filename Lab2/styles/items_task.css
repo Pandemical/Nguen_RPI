@@ -1,5 +1,4 @@
 
-
 .task_status.backlog{
     width: 60px;
     height: 30px;
@@ -26,15 +25,6 @@
     height: 30px;
     color: rgb(167, 53, 53);
     background-color: rgb(255, 206, 206);
-}
-
-.task_list_backlog,
-.task_list_proсess,
-.task_list_ready,
-.task_list_backet {
-    margin-top: 40px;
-    list-style: none;
-    text-align: left;
 }
 
 .task_list_backlog li{
@@ -76,9 +66,18 @@
 .task_list_items{
     width: 180px;
     height: 30px;
+    padding-left: 10px;
+    list-style: none;
+    text-align: left;
     padding-top: 10px;
     margin-top:10px;
     border-left: 4px solid;
+    border-color: gray;
     border-radius: 5px;
     background-color: white;
+}
+
+.list-task{
+    margin-top: 5dvh;
+    margin-left: -100px;
 }

@@ -1,12 +1,14 @@
 import {createElement} from '../framework/render.js'
-function createListTaskComponentTemplate() {
-    return (` <li class="task_list_items">Выучить JS</li> `);
+function createAreaListComponentTemplate() {
+    return (` <ul class="task_list_backlog"> 
+            <li>1</li>
+        </ul>  `);
 
 }
 
-export default class ListTaskComponent {
+export default class AreaListComponent {
     getTemplate() {
-    return createListTaskComponentTemplate();
+    return createAreaListComponentTemplate();
     }
     getElement() {
     if (!this.element) {
