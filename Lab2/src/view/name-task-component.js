@@ -5,6 +5,7 @@ function createNameTaskComponent() {
 }
 
 export default class NameTaskComponent {
+    
     getTemplate() {
     return createNameTaskComponent();
     }
