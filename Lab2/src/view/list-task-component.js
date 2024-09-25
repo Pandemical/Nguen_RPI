@@ -1,10 +1,6 @@
 import {createElement} from '../framework/render.js'
 function createListTaskComponentTemplate() {
-    return (`           <ul class="task_list_backlog">
-            <li class="task_list_items">Выучить JS</li>
-            <li class="task_list_items">Выучить React</li>
-            <li class="task_list_items">Сделать домашку</li>
-        </ul>   `);
+    return (` <li class="task_list_items">Выучить JS</li> `);
 
 }
 

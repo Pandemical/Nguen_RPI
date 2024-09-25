@@ -1,11 +1,13 @@
 import {createElement} from '../framework/render.js'
 function createNameTaskComponent() {
-    return (`   <label class="task_status backlog">Бэклог</label>   `);
+    return (`   <div class="name-tasks"> 
+                    <label class="task_status backlog">Бэклог</label> 
+                    <ul class="list-task"></ul>
+                </div> `);
 
 }
 
 export default class NameTaskComponent {
-    
     getTemplate() {
     return createNameTaskComponent();
     }
