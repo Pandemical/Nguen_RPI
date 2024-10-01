@@ -1,0 +1,96 @@
+
+.task_status.backlog{
+    width: 60px;
+    height: 30px;
+    margin: auto;
+    color: rgb(85, 85, 85);
+    background-color: rgb(226, 226, 226);
+}
+
+.task_status.inprogress{
+    width: 100px;
+    height: 30px;
+    margin: auto;
+    color: rgb(36, 113, 255);
+    background-color: rgb(177, 217, 255);
+}
+
+.task_status.completed{
+    width: 70px;
+    height: 30px;
+    margin: auto;
+    color: rgb(53, 167, 59);
+    background-color: rgb(206, 255, 212);
+}
+
+.task_status.resyclebin{
+    width: 70px;
+    height: 30px;
+    margin: auto;
+    color: rgb(167, 53, 53);
+    background-color: rgb(255, 206, 206);
+}
+
+.task_list_backlog li{
+    padding-left: 10px;
+    border-color: rgb(226, 226, 226);
+}
+
+.task_list_backlog {
+    margin-left: -100px;
+}
+
+.task_list_inprogress {
+    margin-left: -140px;
+}
+
+.task_list_items.inprogress {
+    border-color: rgb(177, 217, 255);
+}
+
+.task_list_ready{
+    margin-left: -110px;
+}
+
+.task_list_items.completed {
+    padding-left: 10px;
+    border-color: rgb(206, 255, 212);
+}
+
+.task_list_backet{
+    margin-left: -110px;
+}
+
+.task_list_items.resyclebin {
+    padding-left: 10px;
+    border-color:  rgb(255, 206, 206);
+}
+
+.task_list_items{
+    width: 180px;
+    height: 30px;
+    padding-left: 10px;
+    list-style: none;
+    text-align: left;
+    padding-top: 10px;
+    margin-top:10px;
+    border-left: 4px solid;
+    border-color: gray;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.task_list_plug{
+    width: 180px;
+    height: 30px;
+    padding-left: 10px;
+    list-style: none;
+    text-align: left;
+    padding-top: 10px;
+    margin-top:10px;
+    border: 1px dashed ;
+    border-color: rgb(180, 179, 179);
+    border-radius: 5px;
+    color: rgb(180, 179, 179);
+
+}
