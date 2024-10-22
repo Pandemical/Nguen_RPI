@@ -51,7 +51,7 @@ export default class TasksBoardPresenter {
 
     #renderTaskList() {
         Object.values(Status).forEach((status) => {
-            const tasksListComponent = new TasksListComponent({ status: status, statusLabel: StatusLabel[status] });
+            const tasksListComponent = new TasksListComponent({ status: status, statusLabel: StatusLabel[status], onTaskDrop: this.#handleTaskDrop.bind(this) });
             if (status === 'resyclebin') {
                 this.#renderBacket(tasksListComponent);
                 return;
@@ -110,10 +110,31 @@ export default class TasksBoardPresenter {
     }
     createTask() {
         const taskTitle = document.querySelector('#add-task').value.trim();
+        
         if (taskTitle) {
-            this.#tasksModel.addTask(taskTitle);  
+            // Добавляем новую задачу в модель
+            const newTask = this.#tasksModel.addTask(taskTitle);  
+            
+            // Очищаем поле ввода
             document.querySelector('#add-task').value = ''; 
+    
+            // Ищем контейнер для рендеринга задачи в зависимости от её статуса
+            const tasksListComponent = document.querySelector(`.list-task.${newTask.status}`);
+            
+            // Проверяем, найден ли контейнер
+            if (tasksListComponent) {
+                // Создаем новый компонент задачи
+                const taskComponent = new TaskComponent({ task: newTask });
+                
+                // Рендерим новую задачу в нужный список
+                render(taskComponent, tasksListComponent);
+    
+                // Логика перетаскивания уже встроена в TaskComponent, так что задача сразу станет перетаскиваемой
+            }
         }
     }
     
+    #handleTaskDrop(taskId, newStatus){
+        this.#tasksModel.updateTaskStatus(taskId, newStatus);
+    }
 }

@@ -1,5 +1,5 @@
 import { tasks } from '../mock/task.js';
-import { GetnerateId } from '../utils.js';
+import { GenerateId } from '../utils.js';
 
 export default class TasksModel {
   #boardtasks = tasks;
@@ -17,7 +17,7 @@ export default class TasksModel {
     const newTask = {
       title,
       status: 'backlog',
-      id: GetnerateId(),
+      id: GenerateId(),
     };
     this.#boardtasks.push(newTask);
     this._notifyObservers();
@@ -39,7 +39,14 @@ export default class TasksModel {
   clearRecycleBin() {
     this.#boardtasks = this.#boardtasks.filter((task) => task.status !== 'resyclebin');
     this._notifyObservers(); // Уведомляем наблюдателей об изменениях
-}
+  }
 
+  updateTaskStatus(taskId, newStatus) {
+    const task = this.#boardtasks.find(task => task.id === taskId);
+    if (task) {
+      task.status = newStatus;
+      this._notifyObservers();
+    }
+  }
 }
 
