@@ -6,26 +6,26 @@ function createTaskComponentTemplate(task) {
 
 }
 
-export default class TaskComponent extends AbstractComponent{
-    constructor({task}) {
-      super();
-      this.task = task;
-      this.#afterCreateElement();
-    }
-  
-    get template() {
-      return createTaskComponentTemplate(this.task);
-    }
+export default class TaskComponent extends AbstractComponent {
+  constructor({task}) {
+    super();
+    this.task = task;
+    this.#afterCreateElement();
+  }
 
-    #afterCreateElement(){
-      this.#makeTaskDraggable();
-    }
+  get template() {
+    return createTaskComponentTemplate(this.task);
+  }
 
-    #makeTaskDraggable(){
-      this.element.setAttribute(`dragstart`, true);
+  #afterCreateElement() {
+    this.#makeTaskDraggable();
+  }
 
-      this.element.addEventListener('dragstart', (event) =>{
-        event.dataTransfer.setData('text/plain', this.task.id);
-      });
-    }
+  #makeTaskDraggable() {
+    this.element.setAttribute(`draggable`, true);
+
+    this.element.addEventListener('dragstart', (event) => {
+      event.dataTransfer.setData('text/plain', this.task.id);
+    });
+  }
 }

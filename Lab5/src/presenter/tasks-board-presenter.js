@@ -97,7 +97,6 @@ export default class TasksBoardPresenter {
         this.#handleModelChange();
     }
     
-
     #handleModelChange() {
         // Обновляем список задач и рендерим доску заново
         this.#boardTasks = [...this.#tasksModel.tasks];

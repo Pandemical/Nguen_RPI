@@ -1,5 +1,5 @@
 import { tasks } from '../mock/task.js';
-import { GenerateId } from '../utils.js';
+import  { GenerateId } from '../utils.js';
 
 export default class TasksModel {
   #boardtasks = tasks;
