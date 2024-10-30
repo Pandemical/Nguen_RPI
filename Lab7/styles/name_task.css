@@ -1,0 +1,28 @@
+.task{
+    max-width: 100%;
+    width: 1000px;
+    display:flex;
+    justify-content: space-between;
+}
+
+.name-tasks{
+    /* display: flex; */
+    margin-left: 45px;
+}
+
+.task_status{
+    width: 30px;
+    margin-left: 50px;
+    padding-top: 10px ;
+    text-align: center;
+    white-space: nowrap;
+    border-radius: 5px;
+}
+
+.task-board{
+    display: flex;
+}
+
+.task-list{
+    padding: 0;
+}
