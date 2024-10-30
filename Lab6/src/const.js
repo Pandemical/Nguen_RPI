@@ -2,7 +2,7 @@ const Status = {
     BACKLOG: 'backlog',
     INPROGRESS: 'inprogress',
     COMPLETED: 'completed',
-    RESYCLEBIN: 'resyclebin',
+    RESYCLEBIN: 'resyclebin'
 };
 
 const StatusLabel = {

@@ -19,8 +19,10 @@ export default class TasksModel {
       status: 'backlog',
       id: GenerateId(),
     };
+    
     this.#boardtasks.push(newTask);
     this._notifyObservers();
+    console.log(newTask.id); 
     return newTask;
   }
 
@@ -38,15 +40,25 @@ export default class TasksModel {
 
   clearRecycleBin() {
     this.#boardtasks = this.#boardtasks.filter((task) => task.status !== 'resyclebin');
-    this._notifyObservers(); // Уведомляем наблюдателей об изменениях
+    this._notifyObservers(); 
   }
 
-  updateTaskStatus(taskId, newStatus) {
-    const task = this.#boardtasks.find(task => task.id === taskId);
-    if (task) {
-      task.status = newStatus;
-      this._notifyObservers();
+  updateTaskStatus(taskId, newStatus, newIndex) {
+    // console.log(`Перемещение задачи с ID ${taskId} в статус ${newStatus} и новый индекс задачи${newIndex}`);
+    const taskIndex = this.#boardtasks.findIndex(task => task.id === taskId);
+    if (taskIndex === -1) {
+        return;
     }
-  }
+    const [task] = this.#boardtasks.splice(taskIndex, 1);
+    task.status = newStatus;
+
+    if (newIndex >= 0 && newIndex < this.#boardtasks.length) {
+        this.#boardtasks.splice(newIndex, 0, task);
+    } else {
+        this.#boardtasks.push(task);
+    }
+    this._notifyObservers();
 }
 
+
+}

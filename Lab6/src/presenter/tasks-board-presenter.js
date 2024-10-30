@@ -1,4 +1,4 @@
-import TasksListComponent from '../view/name-task-component.js'; 
+import TasksListComponent from '../view/name-task-component.js';
 import TaskComponent from '../view/list-task-component.js';
 import TaskBoardComponent from '../view/area-task-component.js';
 import { render } from '../framework/render.js';
@@ -21,8 +21,6 @@ export default class TasksBoardPresenter {
     constructor({ boardContainer, tasksModel }) {
         this.#boardContainer = boardContainer;
         this.#tasksModel = tasksModel;
-
-        // Добавляем наблюдателя, чтобы обновлять представление при изменении модели
         this.#tasksModel.addObserver(this.#handleModelChange.bind(this));
     }
 
@@ -38,37 +36,52 @@ export default class TasksBoardPresenter {
 
     #renderTask(task, container) {
         const taskComponent = new TaskComponent({ task });
-        render(taskComponent, container);
+        const taskList = container.querySelector('.task-list'); 
+
+        if (taskList) {
+            render(taskComponent, taskList); 
+        } else {
+            console.error('Container .task-list не найден внутри блока задач');
+        }
     }
 
-    // Функция для проверки пустоты и рендера заглушки
     #renderIfEmpty(tasks, container) {
-        if (tasks.length === 0) {
+        const taskList = container.querySelector('.task-list');
+        if (taskList && tasks.length === 0) {
             const plugTaskComponent = new PlugTaskComponent();
-            render(plugTaskComponent, container);
+            render(plugTaskComponent, taskList);
         }
     }
 
     #renderTaskList() {
         Object.values(Status).forEach((status) => {
-            const tasksListComponent = new TasksListComponent({ status: status, statusLabel: StatusLabel[status], onTaskDrop: this.#handleTaskDrop.bind(this) });
-            if (status === 'resyclebin') {
-                this.#renderBacket(tasksListComponent);
-                return;
-            } else {
-                render(tasksListComponent, this.#tasksBoardComponent.element);
-            }
-
-            const tasksForStatus = getTasksByStatus(this.#boardTasks, status);
-
-            // Проверка пустоты и рендер заглушки
+            const tasksListComponent = new TasksListComponent({ 
+                status: status, 
+                statusLabel: StatusLabel[status], 
+                onTaskDrop: this.#handleTaskDrop.bind(this) 
+            });
+            
+            render(tasksListComponent, this.#tasksBoardComponent.element);
+            tasksListComponent.afterRender();
+    
+            // Получаем задачи и сортируем их по индексу
+            const tasksForStatus = getTasksByStatus(this.#boardTasks, status).sort((a, b) => {
+                return this.#boardTasks.indexOf(a) - this.#boardTasks.indexOf(b);
+            });
+    
             this.#renderIfEmpty(tasksForStatus, tasksListComponent.element);
-
+    
             tasksForStatus.forEach((task) => {
                 this.#renderTask(task, tasksListComponent.element);
             });
+            
+            if (status === 'resyclebin') {
+                this.#renderResetButton(tasksListComponent);
+            }
         });
     }
+    
+    
 
     #renderBacket(tasksListComponent) {
         render(tasksListComponent, this.#tasksBoardComponent.element);
@@ -85,21 +98,18 @@ export default class TasksBoardPresenter {
 
     #renderResetButton(tasksListComponent) {
         const clearButtonComponent = new ClearButtonComponent({
-            onClick: this.#clearRecycleBinTasks.bind(this), // Привязываем метод очистки
+            onClick: this.#clearRecycleBinTasks.bind(this)
         });
-        render(clearButtonComponent, tasksListComponent.element); // Рендерим кнопку
+        render(clearButtonComponent, tasksListComponent.element); 
     }    
 
     #clearRecycleBinTasks() {
-        // Удаляем задачи со статусом RESYCLEBIN через модель
         this.#tasksModel.clearRecycleBin();
-        // Обновляем представление
         this.#handleModelChange();
     }
     
 
     #handleModelChange() {
-        // Обновляем список задач и рендерим доску заново
         this.#boardTasks = [...this.#tasksModel.tasks];
         this.#clearBoard();
         this.#renderBoard();
@@ -117,7 +127,15 @@ export default class TasksBoardPresenter {
         }
     }
     
-    #handleTaskDrop(taskId, newStatus){
-        this.#tasksModel.updateTaskStatus(taskId, newStatus);
+    #handleTaskDrop(taskId, newStatus, newIndex) {
+        console.log(`Попытка перемещения задачи ${taskId} в ${newStatus}`);
+        
+        if (newStatus === Status.RESYCLEBIN) {
+            console.log(`Перемещаем задачу в корзину.`);
+        }
+        
+        this.#tasksModel.updateTaskStatus(taskId, newStatus, newIndex);
     }
+    
+    
 }

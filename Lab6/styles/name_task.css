@@ -22,3 +22,7 @@
 .task-board{
     display: flex;
 }
+
+.task-list{
+    padding: 0;
+}
