@@ -127,13 +127,7 @@ export default class TasksBoardPresenter {
         }
     }
     
-    #handleTaskDrop(taskId, newStatus, newIndex) {
-        console.log(`Попытка перемещения задачи ${taskId} в ${newStatus}`);
-        
-        if (newStatus === Status.RESYCLEBIN) {
-            console.log(`Перемещаем задачу в корзину.`);
-        }
-        
+    #handleTaskDrop(taskId, newStatus, newIndex) {      
         this.#tasksModel.updateTaskStatus(taskId, newStatus, newIndex);
     }
     

@@ -21,18 +21,16 @@ const tasksModel = new TasksModel(
 
 const tasksBoardPresenter = new TasksBoardPresenter({ boardContainer: tasksBoardContainer, tasksModel });
 
-// Обработчик клика для добавления новой задачи
+
 function handleNewTaskButtonClick() {
-    tasksBoardPresenter.createTask();  // Используем createTask вместо handleAddNewTask
+    tasksBoardPresenter.createTask(); 
 }
 
-// Создаем экземпляр формы и передаем обработчик onClick
 const formAddTaskComponent = new FormAddTaskComponent({
     onClick: handleNewTaskButtonClick
 });
 
-// Рендерим заголовок и форму
 render(new HeaderComponent(), bodyContainer, RenderPosition.BEFOREBEGIN);
-render(formAddTaskComponent, formContainer);  // Рендерим форму перед добавлением события
+render(formAddTaskComponent, formContainer);
 
 tasksBoardPresenter.init(); 

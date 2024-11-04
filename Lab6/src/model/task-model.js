@@ -22,7 +22,6 @@ export default class TasksModel {
     
     this.#boardtasks.push(newTask);
     this._notifyObservers();
-    console.log(newTask.id); 
     return newTask;
   }
 
@@ -44,7 +43,6 @@ export default class TasksModel {
   }
 
   updateTaskStatus(taskId, newStatus, newIndex) {
-    // console.log(`Перемещение задачи с ID ${taskId} в статус ${newStatus} и новый индекс задачи${newIndex}`);
     const taskIndex = this.#boardtasks.findIndex(task => task.id === taskId);
     if (taskIndex === -1) {
         return;

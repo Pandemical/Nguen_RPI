@@ -1,94 +1,91 @@
-import { tasks } from '../mock/task.js';
-import  { GenerateId } from '../utils.js';
+import { GenerateId } from '../utils.js';
 import Observable from '../framework/observable.js';
-import { UserAction } from '../const.js';
-import { UpdateType } from '../const.js';
+import { UpdateType, UserAction } from '../const.js';
 
-export default class TasksModel  extends Observable{
-
-  #observers = [];
+export default class TasksModel extends Observable {
 
   #tasksApiService = null;
   #boardtasks = [];
 
 
- constructor({tasksApiService}) {
-  super();
-   this.#tasksApiService = tasksApiService;
-
-
-   this.#tasksApiService.tasks.then((tasks) => {
-     console.log(tasks);
-   });
- }
-
- get tasks() {
-  return this.#boardtasks;
-}
-
- async init() {
-  try {
-    const tasks = await this.#tasksApiService.tasks;
-    this.#boardtasks = tasks;
-  } catch(err) {
-    this.#boardtasks = [];
+  constructor({ tasksApiService }) {
+    super();
+    this.#tasksApiService = tasksApiService;
   }
-  this._notify(UpdateType.INIT);
-}
 
+  get tasks() {
+    return this.#boardtasks;
+  }
 
-
+  async init() {
+    try {
+      const tasks = await this.#tasksApiService.tasks;
+      this.#boardtasks = tasks;
+    } catch (err) {
+      this.#boardtasks = [];
+    }
+    this._notify(UpdateType.INIT);
+  }
 
   getTasksByStatus(status) {
     return this.#boardtasks.filter(task => task.status === status);
   }
 
-  addTask(title) {
+  async addTask(title) {
     const newTask = {
       title,
       status: 'backlog',
       id: GenerateId(),
     };
-    
-    this.#boardtasks.push(newTask);
-    this._notifyObservers();
-    console.log(newTask.id); 
-    return newTask;
+    try {
+      const createTask = await this.#tasksApiService.addTask(newTask);
+      this.#boardtasks.push(createTask);
+      this._notify(UserAction.ADD_TASK, createTask);
+      return createTask;
+    } catch (err) {
+      console.error('Ошибка при добавлении задачи на сервер', err);
+      throw err;
+    }
   }
 
-  addObserver(observer) {
-    this.#observers.push(observer);
+  deleteTask(taskId) {
+    this.#boardtasks = this.#boardtasks.filter(task => task.id !== taskId);
+    this._notify(UserAction.DELETE_TASK, { id: taskId });
   }
 
-  removeObservers() {
-    this.#observers = this.#observers.filter((obs) => obs !== observer);
+  async clearRecycleBin() {
+    try {
+      const basketTasks = this.#boardtasks.filter((task) => task.status === 'resyclebin');
+
+      await Promise.all(basketTasks.map(task => this.#tasksApiService.deleteTask(task.id)));
+
+      this.#boardtasks = this.#boardtasks.filter((task) => task.status !== 'resyclebin');
+
+      this._notify(UserAction.DELETE_TASK, { status: 'resyclebin' });
+    } catch (err) {
+      console.error('Ошибка при очистке корзины:', err);
+      throw err;
+    }
   }
 
-  _notifyObservers() {
-    this.#observers.forEach((observer) => observer());
-  }
-
-  clearRecycleBin() {
-    this.#boardtasks = this.#boardtasks.filter((task) => task.status !== 'resyclebin');
-    this._notifyObservers(); 
-  }
-
-  updateTaskStatus(taskId, newStatus, newIndex) {
-    // console.log(`Перемещение задачи с ID ${taskId} в статус ${newStatus} и новый индекс задачи${newIndex}`);
+  async updateTaskStatus(taskId, newStatus, newIndex) {
     const taskIndex = this.#boardtasks.findIndex(task => task.id === taskId);
-    if (taskIndex === -1) {
-        return;
-    }
-    const [task] = this.#boardtasks.splice(taskIndex, 1);
-    task.status = newStatus;
+    if (taskIndex === -1) return;
 
-    if (newIndex >= 0 && newIndex < this.#boardtasks.length) {
-        this.#boardtasks.splice(newIndex, 0, task);
-    } else {
-        this.#boardtasks.push(task);
+    try {
+      const [task] = this.#boardtasks.splice(taskIndex, 1);
+      task.status = newStatus;
+
+      const tasksOfSameStatus = this.#boardtasks.filter(task => task.status === newStatus);
+      const insertIndex = newIndex < tasksOfSameStatus.length ? newIndex : tasksOfSameStatus.length;
+
+      this.#boardtasks.splice(insertIndex, 0, task);
+
+      this._notify(UserAction.UPDATE_TASK, task);
+    } catch (err) {
+      console.error('Ошибка обновления статуса', err);
+      throw err;
     }
-    this._notifyObservers();
   }
 
-  
 }

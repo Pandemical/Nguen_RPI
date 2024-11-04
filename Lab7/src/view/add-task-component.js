@@ -16,26 +16,25 @@ export default class FormAddTaskComponent extends AbstractComponent {
 
     constructor({ onClick }) {
         super();
-        this.#handleClick = onClick; // Получаем переданный обработчик
-        this.#inputElement = this.element.querySelector('.user_add_task_search'); // Захватываем элемент ввода
-        this.element.addEventListener('submit', this.#clickHandler); // Добавляем обработчик на submit
+        this.#handleClick = onClick; 
+        this.#inputElement = this.element.querySelector('.user_add_task_search'); 
+        this.element.addEventListener('submit', this.#clickHandler); 
     }
 
     get template() {
         return createFormAddTaskComponentTemplate();
     }
 
-    // Метод для очистки поля ввода
     clearInput() {
         this.#inputElement.value = '';
     }
 
     #clickHandler = (evt) => {
-        evt.preventDefault(); // Предотвращаем отправку формы
-        const taskTitle = this.#inputElement.value; // Получаем текст задачи из поля ввода
+        evt.preventDefault(); 
+        const taskTitle = this.#inputElement.value; 
         if (this.#handleClick) {
-            this.#handleClick(taskTitle); // Передаем текст задачи в обработчик
+            this.#handleClick(taskTitle); 
         }
-        this.clearInput(); // Очищаем поле после добавления задачи
+        this.clearInput(); 
     }
 }
