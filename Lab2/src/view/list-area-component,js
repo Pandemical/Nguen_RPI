@@ -1,0 +1,22 @@
+import {createElement} from '../framework/render.js'
+function createAreaListComponentTemplate() {
+    return (` <ul class="task_list_backlog"> 
+            <li>1</li>
+        </ul>  `);
+
+}
+
+export default class AreaListComponent {
+    getTemplate() {
+    return createAreaListComponentTemplate();
+    }
+    getElement() {
+    if (!this.element) {
+    this.element = createElement(this.getTemplate());
+    }
+    return this.element;
+    }
+    removeElement() {
+    this.element = null;
+    }
+    }
