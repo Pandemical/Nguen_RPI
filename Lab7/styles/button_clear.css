@@ -11,3 +11,9 @@
 .task_button_clear:hover{
     background-color:rgb(141, 47, 47);
 }
+
+.inactive {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: default;
+}

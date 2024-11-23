@@ -11,18 +11,26 @@ export default class ClearButtonComponent extends AbstractComponent{
 
     constructor({ onClick }) {
         super();
-        this.#handleClick = onClick; // Получаем переданный обработчик
-        this.element.addEventListener('click', this.#clickHandler); // Изменяем событие на 'click'
+        this.#handleClick = onClick;
+        this.element.addEventListener('click', this.#clickHandler);
     }
 
     get template() {
         return createClearButtonComponentTemplate();
     }
 
+    enable() {
+        this.element.disabled = false;
+    }
+
+    disable() {
+        this.element.disabled = true;
+    }
+
     #clickHandler = (evt) => {
         evt.preventDefault();
         if (this.#handleClick) {
-            this.#handleClick(); // Вызываем переданный обработчик клика
+            this.#handleClick();
         }
     }
 }

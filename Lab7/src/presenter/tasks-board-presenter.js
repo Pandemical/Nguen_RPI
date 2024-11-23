@@ -94,12 +94,25 @@ export default class TasksBoardPresenter {
     }
     
     #renderResetButton(tasksListComponent) {
-        const clearButtonComponent = new ClearButtonComponent({
-            onClick: this.#clearRecycleBinTasks.bind(this)
-        });
+        const clearButtonComponent = new ClearButtonComponent({});
         render(clearButtonComponent, tasksListComponent.element); 
-    }    
+        //onClick: this.#clearRecycleBinTasks.bind(this)
+        const clearButtonElement = clearButtonComponent.element;
+        if (this.#boardTasks.filter((task) => task.status === Status.RESYCLEBIN).length === 0) {
+            clearButtonElement.disabled = true;
+            clearButtonElement.classList.add('inactive');
+        }
+        clearButtonElement.addEventListener('click', (event) => {
+            if (clearButtonElement.disabled) {
+                event.preventDefault();
+                return;
+            }
+    
+            this.#clearRecycleBinTasks();
+        });
 
+    }    
+    
     async #clearRecycleBinTasks() {
         try{
             this.#tasksModel.clearRecycleBin();
@@ -134,9 +147,13 @@ export default class TasksBoardPresenter {
         }
     }
     
-    #handleTaskDrop(taskId, newStatus, newIndex) {
-        this.#tasksModel.updateTaskStatus(taskId, newStatus, newIndex);
-        this.#handleModelChange(); 
+    async #handleTaskDrop(taskId, newStatus, newIndex) {
+        try {
+            await this.#tasksModel.updateTaskStatus(taskId, newStatus, newIndex);
+            this.#handleModelChange(); 
+        } catch (err) {
+            console.error('Ошибка изменения статуса задачи', err);
+        }
     }
     
 }

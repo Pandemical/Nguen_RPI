@@ -73,19 +73,19 @@ export default class TasksModel extends Observable {
     if (taskIndex === -1) return;
 
     try {
-      const [task] = this.#boardtasks.splice(taskIndex, 1);
-      task.status = newStatus;
+        const [task] = this.#boardtasks.splice(taskIndex, 1);
+        task.status = newStatus;
 
-      const tasksOfSameStatus = this.#boardtasks.filter(task => task.status === newStatus);
-      const insertIndex = newIndex < tasksOfSameStatus.length ? newIndex : tasksOfSameStatus.length;
+        const tasksOfSameStatus = this.#boardtasks.filter(task => task.status === newStatus);
+        const insertIndex = newIndex < tasksOfSameStatus.length ? newIndex : tasksOfSameStatus.length;
+        this.#boardtasks.splice(insertIndex, 0, task);
 
-      this.#boardtasks.splice(insertIndex, 0, task);
+        const updatedTask = await this.#tasksApiService.updateTask(task);
 
-      this._notify(UserAction.UPDATE_TASK, task);
+        this._notify(UserAction.UPDATE_TASK, updatedTask);
     } catch (err) {
-      console.error('Ошибка обновления статуса', err);
-      throw err;
+        console.error('Ошибка обновления статуса', err);
+        throw err;
     }
-  }
-
+}
 }
